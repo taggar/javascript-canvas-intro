@@ -33,20 +33,34 @@
                 // ctx.closePath(); // redundant as fill als closes path
                 ctx.fill();
                 ctx.stroke();
-
-                let step2 = setTimeout(function () {
-                    var imageObj = new Image();
-                    let xPos = Math.floor(Math.random() * window.innerWidth);
-                    let yPos = Math.floor(Math.random() * window.innerHeight);
-
-                    imageObj.src = 'assets/becode-seal.png';
-
-                    imageObj.onload = function () {
-                        ctx.drawImage(imageObj, xPos, yPos, 250, 250);  // DRAW THE IMAGE TO THE CANVAS.
-                    }
-                }, 1000);
-
             }, 1000);
+
+            let step2 = setTimeout(function () {
+                var imageObj = new Image();
+                let xPos = Math.floor(Math.random() * window.innerWidth);
+                let yPos = Math.floor(Math.random() * window.innerHeight);
+
+                imageObj.src = 'assets/becode-seal.png';
+
+                imageObj.onload = function () {
+                    ctx.drawImage(imageObj, xPos, yPos, 250, 250);  // DRAW THE IMAGE TO THE CANVAS.
+                }
+
+            }, 2000);
+
+            let step3 = setTimeout(function () {
+                ctx.font = '50px serif';
+                ctx.strokeStyle = 'green';
+                ctx.fillStyle = 'orange';
+                ctx.strokeText('Hello world', 50, 90);
+                ctx.fillText('Hello world', 50, 90);
+            }, 3000);
+
+            let step4 = setTimeout(function () {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = "black";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);// do your drawing stuff here
+            }, 4000);
 
 
         }
