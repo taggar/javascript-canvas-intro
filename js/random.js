@@ -33,9 +33,23 @@
                 // ctx.closePath(); // redundant as fill als closes path
                 ctx.fill();
                 ctx.stroke();
-            }, 1000);
-        }
 
+                let step2 = setTimeout(function () {
+                    var imageObj = new Image();
+                    let xPos = Math.floor(Math.random() * window.innerWidth);
+                    let yPos = Math.floor(Math.random() * window.innerHeight);
+
+                    imageObj.src = 'assets/becode-seal.png';
+
+                    imageObj.onload = function () {
+                        ctx.drawImage(imageObj, xPos, yPos, 250, 250);  // DRAW THE IMAGE TO THE CANVAS.
+                    }
+                }, 1000);
+
+            }, 1000);
+
+
+        }
     } else {
         // canvas-unsupported code here
     }
