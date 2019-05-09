@@ -3,3 +3,21 @@ body {
     margin: 0;
     overflow: hidden;
 }
+
+canvas {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+}
+
+#canvas1 {
+    z-index: 1;
+}
+
+#canvas2 {
+    z-index: 2;
+}
+
+#canvas3 {
+    z-index: 3;
+}
