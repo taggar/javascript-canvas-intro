@@ -21,3 +21,10 @@ canvas {
 #canvas3 {
     z-index: 3;
 }
+
+button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 4;
+}
