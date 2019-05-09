@@ -1,8 +1,8 @@
 (function () {
-    var canvas1 = document.getElementById('canvas1');
-    var canvas2 = document.getElementById('canvas2');
-    var canvas3 = document.getElementById('canvas3');
-    var canvases = document.querySelectorAll('canvas');
+    const canvas1 = document.getElementById('canvas1');
+    const canvas2 = document.getElementById('canvas2');
+    const canvas3 = document.getElementById('canvas3');
+    const canvases = document.querySelectorAll('canvas');
 
     var snapshot;
     var snapshotImage = new Image;
@@ -17,9 +17,10 @@
         window.addEventListener('beforeunload', saveCanvas);
         window.addEventListener('resize', restoreCanvas);
         window.addEventListener('load', restoreCanvas);
-        window.addEventListener('keydown', keyDownHandler);
+        window.addEventListener('keypress', keyPressHandler);
         window.addEventListener('keyup', keyUpHandler);
         window.addEventListener('mousemove', yellowCircle);
+        document.querySelector('button').addEventListener('click', wipeSlate);
 
     } else {
 
@@ -27,6 +28,7 @@
 
     }
 
+    // Draw a yellow circle and make it follow mouse movement
     function yellowCircle(e) {
         let canvas = canvas1;
         let ctx = canvas.getContext('2d');
@@ -39,30 +41,33 @@
         //requestAnimationFrame(yellowCircle);
     }
 
-    function keyDownHandler(e) {
-        console.log(e.keyCode);
-        if (e.keyCode === 32) {
+    // If Space is pressed, draw a black box, otherwise add text
+    function keyPressHandler(e) {
+        console.log(e.code);
+        if (e.code === 'Space') {
             let canvas = canvas2;
             let ctx = canvas.getContext('2d');
             console.log('Space key down');
-            ctx.fillStyle = 'red';
+            ctx.fillStyle = 'black';
             ctx.fillRect(100, 100, 200, 200);
         } else {
             let canvas = canvas3;
             let ctx = canvas.getContext('2d');
-            text += e.key;
-            console.log(text);
-            ctx.font = '50px serif';
-            ctx.strokeStyle = 'green';
-            ctx.fillStyle = 'orange';
-            ctx.strokeText(text, 50, 90);
-            ctx.fillText(text, 50, 90);
+            if (e.code != 'undefined') {
+                text += e.key;
+                console.log(text);
+                ctx.font = '50px serif';
+                ctx.strokeStyle = 'green';
+                ctx.fillStyle = 'orange';
+                ctx.strokeText(text, 50, 90);
+                ctx.fillText(text, 50, 90);
+            }
         }
-
     }
 
+    // When we release space, the black box should disappear, i.e. we clear the layer
     function keyUpHandler(e) {
-        if (e.keyCode === 32) {
+        if (e.code === 'Space') {
             let canvas = canvas2;
             let ctx = canvas.getContext('2d');
             console.log('Space key up');
@@ -71,6 +76,7 @@
         }
     }
 
+    // To reset a canvas, we redraw it, making sure the backgrund is transparent so lower layers can be seen
     function resetCanvas(canvas) {
         // resize the canvas to fill browser window dynamically
         canvas.width = window.innerWidth;
@@ -80,7 +86,7 @@
         ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 
-
+    // To restore a canvas to its saved state, we first reset it and then read the imagedata from localstorage and redraw it
     function restoreCanvas() {
         for (let canvas of canvases) {
             resetCanvas(canvas);
@@ -92,6 +98,7 @@
         }
     }
 
+    // To save a canvas' state, we save its imagedata to localstorage
     function saveCanvas() {
         for (let canvas of canvases) {
             let id = canvas.getAttribute('id');
@@ -100,6 +107,7 @@
         }
     }
 
+    // Read the imagedata for a canvas from localstorage and redraw it
     function drawDataURIOnCanvas(strDataURI, canvas) {
         'use strict';
         var img = new window.Image();
@@ -107,6 +115,16 @@
             canvas.getContext('2d').drawImage(img, 0, 0);
         });
         img.setAttribute('src', strDataURI);
+    }
+
+    // To wipe the slate clean, we dump stored imagedata and then reset each canvas
+    function wipeSlate() {
+        for (let canvas of canvases) {
+            let id = canvas.getAttribute('id');
+            localStorage.removeItem(`${id}-snapshot`);
+            resetCanvas(canvas);
+        }
+
     }
 
 })();
